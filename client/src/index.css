@@ -1,0 +1,17 @@
+body {
+  margin: 0;
+  background-image: url('/Background.webp'); /* Adjust the path as necessary */
+  background-repeat: repeat;
+
+}
+
+
+html, body {
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+
