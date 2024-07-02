@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -12,13 +12,14 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Slider from '@mui/material/Slider';
 import TextField from '@mui/material/TextField';
+import axios from 'axios';
 
 import AnimatedButtons from '../AnimatedButtons';
 import LoadedRecipe from './loadedRecipe';
 import StyledRadioButtonsGroup from '../StyledRadioButtonsGroup';
 import StyledSpecialNoteForm from '../StyledSpecialNoteForm';
-
-
+import Ingredients from '../Ingredients';
+import Recipe from './Recipe';
 import StyledSliderButton from '../StyledSliderButton';
 
 const getRandomInt = (min, max) => {
@@ -60,17 +61,22 @@ const robotoStyle = {
 };
 
 export default function Gridinc() {
-  const [showResults, setShowResults] = React.useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const [ingredients, setIngredients] = useState([]);
+  const [recipeSteps, setRecipeSteps] = useState([]);
 
-  const handleClick = () => {
-    setShowResults(true);
-  };
-
-  function preventHorizontalKeyboardNavigation(event) {
-    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-      event.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:5000/generate-text', { prompt: "hehehehahhahahaha" });
+      console.log('Generated Text:', response.data);
+      setIngredients(response.data.Ingredients);
+      setRecipeSteps(response.data.Recipe);
+      setShowResults(true);
+    } catch (error) {
+      console.error('Error:', error);
     }
-  }
+  };
 
   return (
     <Box sx={{ flexGrow: 1, maxWidth: 1000, margin: '0 auto', paddingTop: 2 }}>
@@ -105,14 +111,20 @@ export default function Gridinc() {
         </Grid>
         <Grid xs={12} md={12}>
           <ItemB>
-            <AnimatedButtons onClick={handleClick} message="Find Recipe"></AnimatedButtons>
+            <AnimatedButtons onClick={handleSubmit} message="Find Recipe"></AnimatedButtons>
           </ItemB>
         </Grid>
         <Grid xs={12} md={12}>
           <ItemB> 
             <h1 style={robotoStyle}>ENJOY YOUR MEAL</h1>
           </ItemB>
-          { showResults ? <ItemC> <LoadedRecipe /> </ItemC> : null }
+          { showResults ? <ItemC>
+            <div>
+              <h1 style={robotoStyle}>Ingredients</h1>
+              <Ingredients ingredients={ingredients} />
+              <h1 style={robotoStyle}>Recipe</h1>
+              <Recipe steps={recipeSteps} />
+            </div> </ItemC> : null }
         </Grid>
       </Grid>
     </Box>
