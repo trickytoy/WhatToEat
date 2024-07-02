@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Navigation from './Components/Navigation';
 import Gridinc from './Components/Grid/Gridinc';
-import ParticlesInitializer from "./Components/ParticlesInitializer";
-import ParticlesRenderer from "./Components/ParticleRenderer";
+
 const customTheme = createTheme({
   palette: {
     primary: {
@@ -42,14 +41,8 @@ const App = () => {
 
   return (
     <ThemeProvider theme={customTheme}>
-      <div style={{ position: 'relative', overflow: 'hidden' }}>
-        <ParticlesInitializer onInit={handleParticlesInit} />
-        {init && <ParticlesRenderer particlesLoaded={particlesLoaded} />}
-        <div style={{ position: 'relative', zIndex: 1 }}>
-          <Navigation />
-          <Gridinc />
-        </div>
-      </div>
+      <Navigation />
+      <Gridinc />
     </ThemeProvider>
   );
 };
