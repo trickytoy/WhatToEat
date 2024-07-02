@@ -51,7 +51,7 @@ const CustomRadio = styled(Radio)(({ theme }) => ({
   },
 }));
 
-export default function StyledRadioButtonsGroup() {
+export default function StyledRadioButtonsGroup({ onChange }) {
   return (
     <StyledFormControl>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -60,6 +60,7 @@ export default function StyledRadioButtonsGroup() {
           aria-labelledby="demo-radio-buttons-group-label"
           defaultValue="breakfast"
           name="radio-buttons-group"
+          onChange={onChange}
           sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}
         >
           <StyledFormControlLabel

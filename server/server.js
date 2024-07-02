@@ -29,7 +29,6 @@ app.post('/generate-text', async (req, res) => {
           "Quickly mix the egg mixture with the pasta, adding a little pasta water to create a creamy sauce.",
           "Serve immediately with extra grated Parmesan and black pepper on top."
         ]
-      }
-      
-      );
+      });
+    console.log(req.body)
 });

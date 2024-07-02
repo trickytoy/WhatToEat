@@ -4,35 +4,26 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
-import { Theme } from "@mui/material";
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import Slider from '@mui/material/Slider';
-import TextField from '@mui/material/TextField';
 import axios from 'axios';
 
 import AnimatedButtons from '../AnimatedButtons';
-import LoadedRecipe from './loadedRecipe';
-import StyledRadioButtonsGroup from '../StyledRadioButtonsGroup';
-import StyledSpecialNoteForm from '../StyledSpecialNoteForm';
 import Ingredients from '../Ingredients';
 import Recipe from './Recipe';
+import StyledRadioButtonsGroup from '../StyledRadioButtonsGroup';
+import StyledSpecialNoteForm from '../StyledSpecialNoteForm';
 import StyledSliderButton from '../StyledSliderButton';
 
 const getRandomInt = (min, max) => {
-  min = Math.ceil(min); // Ensuring min is an integer
-  max = Math.floor(max); // Ensuring max is an integer
+  min = Math.ceil(min);
+  max = Math.floor(max);
   return Math.floor(Math.random() * (max - min) + min);
 };
 
 const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
   textAlign: 'center',
-  borderRadius: theme.shape.borderRadius, // Rounded corners
-  boxShadow: '0 3px 20px rgba(0, 0, 0, 0.4)', // Light shadow for depth
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: '0 3px 20px rgba(0, 0, 0, 0.4)',
   backgroundColor: '#2A68A2',
 }));
 
@@ -64,11 +55,36 @@ export default function Gridinc() {
   const [showResults, setShowResults] = useState(false);
   const [ingredients, setIngredients] = useState([]);
   const [recipeSteps, setRecipeSteps] = useState([]);
+  const [mealType, setMealType] = useState('');
+  const [proteinIntake, setProteinIntake] = useState(30);
+  const [howManyPeople, setHowManyPeople] = useState(2);
+  const [specialNote, setSpecialNote] = useState('');
+
+  const handleMealTypeChange = (event) => {
+    setMealType(event.target.value);
+  };
+
+  const handleProteinIntakeChange = (event, newValue) => {
+    setProteinIntake(newValue);
+  };
+
+  const handleHowManyPeopleChange = (event, newValue) => {
+    setHowManyPeople(newValue);
+  };
+
+  const handleSpecialNoteChange = (event) => {
+    setSpecialNote(event.target.value);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/generate-text', { prompt: "hehehehahhahahaha" });
+      const response = await axios.post('http://localhost:5000/generate-text', {
+        MealType: mealType,
+        ProteinIntake: proteinIntake,
+        HowManyPeople: howManyPeople,
+        SpecialNote: specialNote,
+      });
       console.log('Generated Text:', response.data);
       setIngredients(response.data.Ingredients);
       setRecipeSteps(response.data.Recipe);
@@ -86,24 +102,24 @@ export default function Gridinc() {
             <Grid container spacing={2}>
               <Grid xs={12} md={12} sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Item>
-                  <StyledRadioButtonsGroup></StyledRadioButtonsGroup>
+                  <StyledRadioButtonsGroup onChange={handleMealTypeChange} />
                 </Item>
               </Grid>
               <Grid md={3}></Grid>
               <Grid xs={12} md={3} sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Item>
-                  <StyledSliderButton label="Protein intake" mins={0} maxs={100} dvalue={30}></StyledSliderButton>
+                  <StyledSliderButton label="Protein intake" mins={0} maxs={100} dvalue={proteinIntake} onChange={handleProteinIntakeChange} />
                 </Item>
               </Grid>
               <Grid xs={12} md={3} sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Item>
-                  <StyledSliderButton label="How many people" mins={0} maxs={10} dvalue={2}></StyledSliderButton>
+                  <StyledSliderButton label="How many people" mins={0} maxs={10} dvalue={howManyPeople} onChange={handleHowManyPeopleChange} />
                 </Item>
               </Grid>
               <Grid md={3}></Grid>
               <Grid xs={12} md={12} sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Item sx={{ width: '80%' }}>
-                  <StyledSpecialNoteForm></StyledSpecialNoteForm>
+                  <StyledSpecialNoteForm value={specialNote} onChange={handleSpecialNoteChange} />
                 </Item>
               </Grid>
             </Grid>

@@ -5,10 +5,10 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
 const StyledFormLabel = styled(FormLabel)(({ theme }) => ({
-    color: theme.palette.primary.main, // Primary color for label
-    fontWeight: 'bold', // Bold text
-    marginBottom: theme.spacing(1), // Spacing below the label
-    fontSize: 20,
+  color: theme.palette.primary.main, // Primary color for label
+  fontWeight: 'bold', // Bold text
+  marginBottom: theme.spacing(1), // Spacing below the label
+  fontSize: 20,
 }));
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -30,10 +30,10 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-export default function StyledSpecialNoteForm() {
+export default function StyledSpecialNoteForm({ value, onChange }) {
   return (
     <>
-      <StyledFormLabel id="demo-radio-buttons-group-label">Special Note:</StyledFormLabel>
+      <StyledFormLabel id="special-note-label">Special Note:</StyledFormLabel>
       <StyledBox
         component="form"
         sx={{
@@ -48,6 +48,8 @@ export default function StyledSpecialNoteForm() {
           multiline
           maxRows={5}
           variant="filled"
+          value={value}
+          onChange={onChange}
         />
       </StyledBox>
     </>
